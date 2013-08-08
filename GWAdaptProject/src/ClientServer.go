@@ -2,13 +2,16 @@
  * Created with IntelliJ IDEA.
  * User: Administrator
  * Date: 13-8-7
- * Time: 下午2:58
+ * Time: 下午4:21
  * To change this template use File | Settings | File Templates.
  */
 package main
 
-func main() {
-	go GoAdaptServer();
-	go GoClientServer();
-	for {}
+import (
+	"websocket"
+)
+
+func GoClientServer() {
+	//HTTP消息过来.处理.
 }
+
