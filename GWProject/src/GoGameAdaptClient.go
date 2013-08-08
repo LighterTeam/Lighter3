@@ -19,9 +19,6 @@ var tcp *TSTCP
 
 func FunClientInit(conn net.Conn) {
 	fmt.Println("客户端连接成功!")
-	for i := 0; i < 10; i++ {
-		tcp.SendBuffer("客户端断开连接")
-	}
 }
 
 func FunReceiveBuffer(conn net.Conn, sBuffer string) {
