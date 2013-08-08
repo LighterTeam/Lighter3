@@ -14,7 +14,8 @@ import (
 func main() {
 	go GoAdaptServer()
 	go GoClientServer()
+
 	for {
-		time.Sleep(10000)
+		time.Sleep(1000)
 	}
 }

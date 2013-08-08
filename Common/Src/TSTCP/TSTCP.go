@@ -25,6 +25,9 @@ func (this *TSTCP) SendBuffer(sBuffer string) {
 	buf := make([]byte, len(sBuffer)+4)
 	binary.BigEndian.PutUint32(buf[:4], uint32(len(sBuffer)))
 	copy(buf[4:], []byte(sBuffer))
+
+	fmt.Println("Write:",buf)
+
 	this.conn.Write(buf)
 }
 
@@ -61,7 +64,7 @@ func (this *TSTCP) Create_Client(webpath string, init ClientInit, funRB ReceiveB
 func tcpHandler(conn net.Conn, funRB ReceiveBuffer, funCC ConnectClose) {
 	var cache []byte = make([]byte, 32)
 	var testLen uint32
-	buf := bytes.NewBuffer(make([]byte, 0, 1024))
+	buf := bytes.NewBuffer(make([]byte, 0, 64))
 
 	for {
 		size, err := conn.Read(cache)
@@ -82,6 +85,9 @@ func tcpHandler(conn net.Conn, funRB ReceiveBuffer, funCC ConnectClose) {
 			}
 
 			if testLen == 0 {
+				if buf.Len() < 4 {
+					break
+				}
 				len := make([]byte, 4)
 				_, err = buf.Read(len)
 				testLen = binary.BigEndian.Uint32(len)
@@ -94,9 +100,9 @@ func tcpHandler(conn net.Conn, funRB ReceiveBuffer, funCC ConnectClose) {
 			data := make([]byte, testLen)
 			_, err = buf.Read(data)
 
-			buf := data[4:]
-			fmt.Printf("content %v bytes: %v\n", testLen, string(buf))
-			funRB(conn, string(buf))
+			fmt.Printf("content %v bytes: %v\n", testLen, string(data))
+			funRB(conn, string(data))
+			testLen = 0
 		}
 
 		time.Sleep(1000)
