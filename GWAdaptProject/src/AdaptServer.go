@@ -8,6 +8,7 @@
 package main
 
 import (
+	_ "TSCommon"
 	. "TSTCP"
 	"fmt"
 	"net"
