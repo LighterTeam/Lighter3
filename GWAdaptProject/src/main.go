@@ -7,8 +7,14 @@
  */
 package main
 
+import (
+	"time"
+)
+
 func main() {
-	go GoAdaptServer();
-	go GoClientServer();
-	for {}
+	go GoAdaptServer()
+	go GoClientServer()
+	for {
+		time.Sleep(10000)
+	}
 }

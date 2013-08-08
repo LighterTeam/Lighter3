@@ -1,16 +1,13 @@
 /**
  * Created with IntelliJ IDEA.
  * User: Administrator
- * Date: 13-8-7
- * Time: 下午4:21
+ * Date: 13-8-8
+ * Time: 上午9:47
  * To change this template use File | Settings | File Templates.
  */
 package main
 
-import (
-)
+func GoClientServer () {
 
-func GoClientServer() {
-	//HTTP消息过来.处理.
+
 }
-

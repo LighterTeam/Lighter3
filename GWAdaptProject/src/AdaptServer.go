@@ -8,88 +8,28 @@
 package main
 
 import (
-	"net"
+	"TSTCP"
 	"fmt"
-	"bytes"
-	"encoding/binary"
-	"time"
+	"net"
 )
 
-func ConnectNew(conn net.Conn) {
+func FunServerInit() {
+	fmt.Println("网关适配服启动成功!")
+}
+
+func FunConnectNew(conn net.Conn) {
+	fmt.Println("客户端上线!")
+}
+
+func FunReceiveBuffer(conn net.Conn, sBuffer string) {
 
 }
 
-func ReceiveBuffer(conn net.Conn, sBuffer string) {
-
-}
-
-func SendBuffer(conn net.Conn, sBuffer string) {
-	buf := make([]byte, len(sBuffer) + 4);
-	copy(buf[:4],[]byte(len(sBuffer)))
-	copy(buf[4:],[]byte(sBuffer))
-	conn.Write(buf);
+func FunConnectClose(conn net.Conn) {
+	fmt.Println("客户端下线!")
 }
 
 func GoAdaptServer() {
-	listener, err := net.Listen("tcp", "localhost:9188")
-	if err != nil {
-		fmt.Println("Tcp listen at port 9188 failed, err", err.Error())
-		return
-	}
-	for {
-		var conn net.Conn
-		conn, err = listener.Accept()
-		if err != nil {
-			fmt.Println("Accept failed, err", err.Error())
-			return
-		}
-		fmt.Println("Accept connect.")
-		ConnectNew(conn);
-		go tcpHandler(conn)
-	}
+	tcp := new(TSTCP.TSTCP)
+	tcp.Create_Server("localhost:9188", FunServerInit, FunConnectNew, FunReceiveBuffer, FunConnectClose)
 }
-func tcpHandler(conn net.Conn) {
-	var cache []byte = make([]byte, 32)
-	var testLen uint32;
-	buf := bytes.NewBuffer(make([]byte, 0, 1024));
-
-	for {
-		size, err := conn.Read(cache)
-		if err != nil {
-			fmt.Printf("Read error, %v\n", err.Error())
-			return
-		}
-		fmt.Printf("Read %v bytes: %v.\n", size, cache)
-
-		buf.Write(cache[:size])
-		fmt.Printf("Buffer: %v\n", buf.Bytes())
-
-		for {
-			if buf.Len() == 0 {
-				testLen = 0
-				break
-			}
-
-			if testLen == 0 {
-				len := make([]byte, 4)
-				_, err = buf.Read(len)
-				testLen = binary.BigEndian.Uint32(len)
-			}
-
-			if int(testLen) > buf.Len() || testLen == 0 {
-				break
-			}
-
-			data := make([]byte, testLen)
-			_, err = buf.Read(data)
-
-			buf := data[4:]
-			fmt.Printf("content %v bytes: %v\n", testLen, string(buf))
-			ReceiveBuffer(conn, string(buf))
-		}
-
-		time.Sleep(1000)
-	}
-}
-
-
