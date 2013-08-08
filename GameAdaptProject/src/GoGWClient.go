@@ -8,8 +8,9 @@
 package main
 
 import (
-	_ "TSCommon"
+	"TSCommon"
 	. "TSTCP"
+	"TSUtil"
 	"fmt"
 	"net"
 )
@@ -18,9 +19,6 @@ var tcp *TSTCP
 
 func FunClientInit(conn net.Conn) {
 	fmt.Println("客户端连接成功!")
-	for i := 0; i < 10; i++ {
-		tcp.SendBuffer("客户端断开连接")
-	}
 }
 
 func FunReceiveBuffer(conn net.Conn, sBuffer string) {
@@ -33,5 +31,5 @@ func FunConnectClose(conn net.Conn) {
 
 func GoGWClient() {
 	tcp = new(TSTCP)
-	tcp.Create_Client("localhost:9188", FunClientInit, FunReceiveBuffer, FunConnectClose)
+	tcp.Create_Client(TSCommon.GameAdaptServer_IP+":"+TSUtil.ToString(TSCommon.GameAdaptServer_Port), FunClientInit, FunReceiveBuffer, FunConnectClose)
 }
