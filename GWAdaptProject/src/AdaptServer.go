@@ -8,7 +8,7 @@
 package main
 
 import (
-	"TSTCP"
+	. "TSTCP"
 	"fmt"
 	"net"
 )
@@ -30,6 +30,6 @@ func FunConnectClose(conn net.Conn) {
 }
 
 func GoAdaptServer() {
-	tcp := new(TSTCP.TSTCP)
+	tcp := new(TSTCP)
 	tcp.Create_Server("localhost:9188", FunServerInit, FunConnectNew, FunReceiveBuffer, FunConnectClose)
 }

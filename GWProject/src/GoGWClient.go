@@ -8,16 +8,17 @@
 package main
 
 import (
-	"TSTCP"
+	_ "TSCommon"
+	. "TSTCP"
 	"fmt"
 	"net"
 )
 
-var tstcp *TSTCP.TSTCP
+var tstcp *TSTCP
 
 func FunClientInit(conn net.Conn) {
 	fmt.Println("客户端连接成功!")
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < 10; i++ {
 		tstcp.SendBuffer("客户端断开连接")
 	}
 }
@@ -31,6 +32,6 @@ func FunConnectClose(conn net.Conn) {
 }
 
 func GoGWClient() {
-	tstcp = new(TSTCP.TSTCP)
+	tstcp = new(TSTCP)
 	tstcp.Create_Client("localhost:9188", FunClientInit, FunReceiveBuffer, FunConnectClose)
 }
