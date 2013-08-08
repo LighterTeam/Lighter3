@@ -4,7 +4,8 @@ package main
 import "time"
 
 func main() {
-	go GoGWClient()
+	go GoClientServer()
+	go GoGameAdaptClient()
 	for {
 		time.Sleep(1000)
 	}

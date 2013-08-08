@@ -8,18 +8,19 @@
 package main
 
 import (
-	_ "TSCommon"
+	"TSCommon"
+	"TSUtil"
 	. "TSTCP"
 	"fmt"
 	"net"
 )
 
-var tstcp *TSTCP
+var tcp *TSTCP
 
 func FunClientInit(conn net.Conn) {
 	fmt.Println("客户端连接成功!")
 	for i := 0; i < 10; i++ {
-		tstcp.SendBuffer("客户端断开连接")
+		tcp.SendBuffer("客户端断开连接")
 	}
 }
 
@@ -31,7 +32,8 @@ func FunConnectClose(conn net.Conn) {
 	fmt.Println("客户端断开连接!")
 }
 
-func GoGWClient() {
-	tstcp = new(TSTCP)
-	tstcp.Create_Client("localhost:9188", FunClientInit, FunReceiveBuffer, FunConnectClose)
+func GoGWAdaptClient() {
+	tcp = new(TSTCP)
+	localhost := TSCommon.GateWayAdaptServer_IP + ":" + TSUtil.ToString(TSCommon.GateWayAdaptServer_Port);
+	tcp.Create_Client(localhost, FunClientInit, FunReceiveBuffer, FunConnectClose)
 }

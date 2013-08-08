@@ -7,6 +7,7 @@
  */
 package main
 
+//HTTP客户端连接
 func GoClientServer () {
 
 

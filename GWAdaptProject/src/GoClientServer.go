@@ -5,6 +5,8 @@
  * Time: 下午4:21
  * To change this template use File | Settings | File Templates.
  */
+
+//客户端是HTTP的所以需要分开处理
 package main
 
 import (

@@ -7,7 +7,6 @@
  */
 package main
 
-func GoClientServer () {
-
+func GoClientServer() {
 
 }
