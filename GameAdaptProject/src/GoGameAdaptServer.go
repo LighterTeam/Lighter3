@@ -17,7 +17,7 @@ func FunConnectNew(conn net.Conn) {
 }
 
 func FunReceiveBuffer(conn net.Conn, sBuffer string) {
-	fmt.Println("xx===============================:", sBuffer)
+	fmt.Println(sBuffer)
 }
 
 func FunConnectClose(conn net.Conn) {

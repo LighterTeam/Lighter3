@@ -23,7 +23,7 @@ func GoGWAdaptClient() {
 			fmt.Println("GW客户端连接成功!")
 		},
 		func(conn net.Conn, sBuffer string, UUID uint64) {
-			fmt.Println("Buffer:", sBuffer," UUID:", UUID)
+			fmt.Println("GW客户端Buffer:", sBuffer," UUID:", UUID)
 		},
 		func(conn net.Conn, UUID uint64) {
 			fmt.Println("GW客户端断开连接! UUID", UUID)

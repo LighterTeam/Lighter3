@@ -17,7 +17,7 @@ import (
 
 var Pool_GateWayServer [TSCommon.Max_Pool_GateWayServer]*CGateWay
 
-func GoAdaptServer() {
+func GoGameServer() {
 	tcp := new(TSTCP)
 	tcp.Create_Server(":"+TSUtil.ToString(TSCommon.GateWayAdaptServer_Port),
 		func () {

@@ -11,33 +11,21 @@ import (
 	"TSCommon"
 	. "TSTCP"
 	"TSUtil"
-	_ "fmt"
+	"fmt"
 	"net"
 )
-
-//func FunClientInit(conn net.Conn) {
-//	fmt.Println("客户端连接成功!")
-//}
-
-//func FunReceiveBuffer(conn net.Conn, sBuffer string, UUID uint64) {
-
-//}
-
-//func FunConnectClose(conn net.Conn, UUID uint64) {
-//	fmt.Println("客户端断开连接!")
-//}
 
 func GoGameAdaptClient() {
 	tcp := new(TSTCP)
 	localhost := TSCommon.GameAdaptServer_IP + ":" + TSUtil.ToString(TSCommon.GameAdaptServer_Port)
 	tcp.Create_Client(localhost,
 		func(conn net.Conn) {
-
+			fmt.Println("GW客户端连接成功!")
 		},
 		func(conn net.Conn, sBuffer string, UUID uint64) {
-
+			fmt.Println("GW客户端Buffer:", sBuffer," UUID:", UUID)
 		},
 		func(conn net.Conn, UUID uint64) {
-
+			fmt.Println("GW客户端断开连接! UUID", UUID)
 		})
 }

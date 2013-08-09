@@ -70,6 +70,8 @@ func tcpHandler(conn net.Conn, funRB ReceiveBuffer, funCC ConnectClose, UUID uin
 	var testLen uint32
 	buf := bytes.NewBuffer(make([]byte, 0, 64))
 
+
+
 	for {
 		size, err := conn.Read(cache)
 		if err != nil {
