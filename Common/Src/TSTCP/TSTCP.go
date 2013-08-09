@@ -6,13 +6,16 @@ import (
 	"fmt"
 	"net"
 	"time"
+	"TSUtil"
+	"strings"
+	"strconv"
 )
 
-type ConnectNew func(conn net.Conn)
-type ReceiveBuffer func(conn net.Conn, sBuffer string)
+type ConnectNew func(conn net.Conn) uint64
+type ReceiveBuffer func(conn net.Conn, sBuffer string, UUID uint64)
 type ServerInit func()
 type ClientInit func(conn net.Conn)
-type ConnectClose func(conn net.Conn)
+type ConnectClose func(conn net.Conn, UUID uint64)
 
 type TSTCP struct {
 	conn net.Conn
@@ -45,8 +48,9 @@ func (this *TSTCP) Create_Server(webpath string, init ServerInit, funCN ConnectN
 			return
 		}
 		fmt.Println("Accept connect.")
-		funCN(this.conn)
-		go tcpHandler(this.conn, funRB, funCC)
+		UUID := funCN(this.conn)
+		this.SendBuffer("_RegistUUID," + TSUtil.ToString(int(UUID)));
+		go tcpHandler(this.conn, funRB, funCC, UUID)
 	}
 }
 
@@ -58,10 +62,10 @@ func (this *TSTCP) Create_Client(webpath string, init ClientInit, funRB ReceiveB
 		return
 	}
 	init(this.conn)
-	go tcpHandler(this.conn, funRB, funCC)
+	go tcpHandler(this.conn, funRB, funCC, 0)
 }
 
-func tcpHandler(conn net.Conn, funRB ReceiveBuffer, funCC ConnectClose) {
+func tcpHandler(conn net.Conn, funRB ReceiveBuffer, funCC ConnectClose, UUID uint64) {
 	var cache []byte = make([]byte, 32)
 	var testLen uint32
 	buf := bytes.NewBuffer(make([]byte, 0, 64))
@@ -69,7 +73,7 @@ func tcpHandler(conn net.Conn, funRB ReceiveBuffer, funCC ConnectClose) {
 	for {
 		size, err := conn.Read(cache)
 		if err != nil {
-			funCC(conn)
+			funCC(conn, UUID)
 			fmt.Printf("Read error, %v\n", err.Error())
 			return
 		}
@@ -101,10 +105,20 @@ func tcpHandler(conn net.Conn, funRB ReceiveBuffer, funCC ConnectClose) {
 			_, err = buf.Read(data)
 
 			fmt.Printf("content %v bytes: %v\n", testLen, string(data))
-			funRB(conn, string(data))
+
+			ss := string(data)
+			ssList := strings.Split(ss,",");
+			fmt.Println("__RegistUUID : ", ssList[0])
+			if ssList[0] == "__RegistUUID" {
+				value,_ := strconv.Atoi(ssList[1]);
+				UUID = uint64(value)
+				fmt.Println("__RegistUUID : ", UUID)
+			} else {
+				funRB(conn, ss, UUID)
+			}
 			testLen = 0
 		}
-
 		time.Sleep(1000)
 	}
 }
+

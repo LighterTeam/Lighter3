@@ -7,8 +7,13 @@
  */
 package main
 
+import (
+	_ "TSCommon"
+	_ "TSHTTP"
+	_ "TSUtil"
+)
+
 //HTTP客户端连接
-func GoClientServer () {
-
-
+func GoClientServer() {
+	//TSHTTP.CreateHTTPServer(":" + TSUtil.ToString(TSCommon.))
 }
