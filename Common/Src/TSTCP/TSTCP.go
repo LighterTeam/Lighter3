@@ -108,11 +108,11 @@ func tcpHandler(conn net.Conn, funRB ReceiveBuffer, funCC ConnectClose, UUID uin
 
 			ss := string(data)
 			ssList := strings.Split(ss,",");
-			fmt.Println("__RegistUUID : ", ssList[0])
-			if ssList[0] == "__RegistUUID" {
+			fmt.Println("_RegistUUID : ", ssList[0])
+			if ssList[0] == "_RegistUUID" {
 				value,_ := strconv.Atoi(ssList[1]);
 				UUID = uint64(value)
-				fmt.Println("__RegistUUID : ", UUID)
+				fmt.Println("_RegistUUID : ", UUID)
 			} else {
 				funRB(conn, ss, UUID)
 			}
